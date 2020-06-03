@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jp-lourenco/Ecoleta#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "knex": "^0.21.1",
     "ts-node": "^8.10.2"
   },
   "devDependencies": {
