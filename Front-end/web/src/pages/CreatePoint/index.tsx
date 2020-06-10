@@ -31,9 +31,13 @@ const CreatePoint = () => {
     const [selectedUf, setSelectedUf ] = useState<string>('0');
     const [selectedCidade, setSelectedCidades ] = useState<string>('0');
     const [selectedPosition, setSelectedPosition ] = useState<[number, number]>([0, 0]);
-
     const [initialPosition, setInitialPosition ] = useState<[number, number]>([0, 0]);
-
+    const [selectedItens, setSelectedItens ] = useState<number[]>([]);
+    const [formData, setFormData] = useState({
+        name:'',
+        email:'',
+        whatsapp:'',
+    });
 
     useEffect(() => {
         api.get('itens').then(response => {
@@ -76,7 +80,19 @@ const CreatePoint = () => {
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
+        setFormData({...formData, [name]: value});
+    }
+
+    function handleSelectItem(id: number) {
+        const alreadySelected = selectedItens.findIndex(item => item === id);
         
+        if(alreadySelected >= 0) {
+            const filteredItens = selectedItens.filter(item => item !== id);
+            setSelectedItens(filteredItens);
+        } else {
+            setSelectedItens([...selectedItens, id]);
+        }
     }
 
     return (
@@ -173,7 +189,11 @@ const CreatePoint = () => {
 
                     <ul className="items-grid">
                         {itens.map(item =>
-                            <li key={item.id} className="selected">
+                            <li 
+                                key={item.id} 
+                                className={selectedItens.includes(item.id) ? 'selected' : ''} 
+                                onClick={() => handleSelectItem(item.id)}
+                            >
                                 <img src={item.image_url} alt={item.title}/>
                                 <span>{item.title}</span>
                             </li> 
